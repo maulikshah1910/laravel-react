@@ -4,14 +4,15 @@ import { FaEnvelope } from "react-icons/fa";
 type Props = {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    isValid: boolean;
 };
 
 const UserName = ( {
     value, 
-    onChange
+    onChange,
+    isValid
 } : Props
 ) => {
-    const [valid, setValid] = useState<boolean>(true);
 
     return (
         <div className="relative ">
@@ -21,7 +22,7 @@ const UserName = ( {
                 value={value} 
                 onChange={onChange} 
                 placeholder="Username"
-                className={`w-full border ${valid ? 'border-gray-300' : 'border-red-500'} rounded-md pl-8 pr-5 pt-2 pb-2`} />
+                className={`w-full border ${isValid ? 'border-gray-300' : 'border-red-500'} rounded-md pl-8 pr-5 pt-2 pb-2`} />
         </div>
     );
 }

@@ -4,14 +4,15 @@ import { FaLock } from "react-icons/fa";
 type Props = {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    isValid?: boolean;
 };
 
 const Password = ( {
     value, 
-    onChange 
+    onChange,
+    isValid
 } : Props
 ) => {
-    const [valid, setValid] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     return (
@@ -22,7 +23,7 @@ const Password = ( {
                 value={value} 
                 onChange={onChange} 
                 placeholder="Password"
-                className={`w-full border ${valid ? 'border-gray-300' : 'border-red-500'} rounded-md pl-8 pr-5 pt-2 pb-2`} />
+                className={`w-full border ${isValid ? 'border-gray-300' : 'border-red-500'} rounded-md pl-8 pr-5 pt-2 pb-2`} />
         </div>
     );
 }
