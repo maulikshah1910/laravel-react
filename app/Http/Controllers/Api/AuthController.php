@@ -29,7 +29,7 @@ class AuthController extends Controller
                 'success' => false,
                 'message' => 'Invalid Inputs',
                 'errors' => $validator->getMessageBag()
-            ], 400);
+            ], 419);
         }
 
         $request->merge(['email' => $request->username]);
