@@ -34,11 +34,15 @@ class ProfileController extends Controller
 
         $user = auth('api')->user();
         if (! Hash::check($request->current_password, $user->password)) {
-            return response()->json(['error' => 'Current password is incorrect.'], 403);
+            return response()->json([
+                'errors' => [
+                    'current_password' => ['Current password is incorrect.']
+                ]
+            ], 422);
         }
 
-        // $user->password = Hash::make($request->new_password);
-        // $user->save();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
 
         return response()->json([
             'success' => true,
