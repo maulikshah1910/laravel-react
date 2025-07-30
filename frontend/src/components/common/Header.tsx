@@ -3,8 +3,16 @@ import { useState } from "react";
 import ProfileNav from "./ProfileNav";
 import Link from "next/link";
 
+type userDetails = {
+    name?: string;
+    email?: string;
+};
 
-const Header = () => {
+const Header = ({
+    user
+}: {
+    user?: userDetails;
+} ) => {
     const userName = "Maulik";
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -21,7 +29,11 @@ const Header = () => {
                     onClick={() => setMenuOpen(!menuOpen)}
                     className="flex cursor-pointer hover:underline items-center space-x-2 bg-transparent text-white  rounded-md focus:outline-none"
                 >
-                    <span className="text-sm font-medium ">{userName}</span>
+                    <span className="text-sm font-medium ">
+                        {user?.name} {user?.email && ( <>
+                        - {user?.email}
+                        </>) }
+                    </span>
                     <svg
                         className={`h-4 w-4 transition-transform ${menuOpen ? 'rotate-180' : ''}`}
                         fill="none"
