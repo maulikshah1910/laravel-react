@@ -5,6 +5,7 @@ import SubmitButton from "@/components/form/SubmitButton";
 import Link from "next/link";
 import { useState } from "react";
 import api from "../../../../lib/axios";
+import Loader from "@/components/common/Loader";
 
 const Profile = () => {
     const [password, setPassword] = useState<string>("");
@@ -21,6 +22,8 @@ const Profile = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [successMessage, setSuccessMessage] = useState<string>("");
+
+    const [showLoader, setShowLoader] = useState<boolean>(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -63,6 +66,8 @@ const Profile = () => {
             setErrorMessage("");
             setSuccessMessage("");
 
+            setShowLoader(true);
+
             const res = await api.post('/profile/update-password', {
                 current_password: password,
                 new_password: newPassword,
@@ -91,8 +96,9 @@ const Profile = () => {
                     setErrorMessage("");
                     setSuccessMessage("");
                 }, 5000);
-            }
 
+            }
+            setShowLoader(false);
         } catch (error:any) {
             console.error("Error updating password:", error);
             if (error.status && error.status === 422) {
@@ -110,6 +116,8 @@ const Profile = () => {
                     setConfirmPasswordError(errors.confirm_new_password[0]);
                 }
             }
+
+            setShowLoader(false);
         }
     };
 
@@ -160,9 +168,9 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>) }
-
             </div>
 
+            {showLoader && <Loader />}
         </div>
     );
 };

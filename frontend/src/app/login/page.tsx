@@ -6,6 +6,7 @@ import UserName from "@/components/form/UserName";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import api from "../../../lib/axios";
+import Loader from "@/components/common/Loader";
 
 const Login = () => {
     const router = useRouter();
@@ -20,6 +21,8 @@ const Login = () => {
     const [passwordError, setPasswordError] = useState<string>("");
 
     const [errorMessage, setErrorMessage] = useState<string>("");
+
+    const [showLoader, setShowLoader] = useState<boolean>(false);
 
     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -46,6 +49,7 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
+            setShowLoader(true);
             setErrorMessage("");
 
             const res = await api.post('/login', {
@@ -63,11 +67,15 @@ const Login = () => {
             const token = res.data.token;
             localStorage.setItem('token', token);
 
+            setShowLoader(false);
+
             // redirect to dashboard page
             router.push('/dashboard');
         } catch (error: any) {
             setErrorMessage(error.response.data.message);
             setPassword('');
+
+            setShowLoader(false);
         }
 
     }
@@ -134,6 +142,8 @@ const Login = () => {
                 </div>) }
 
             </div>
+
+            {showLoader && <Loader />}
         </div>
     )
 }
