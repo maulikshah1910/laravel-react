@@ -1,8 +1,10 @@
 'use client';
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DataTable } from "simple-datatables";
+import 'simple-datatables/dist/style.css';
+import CreateFilePopup from "./create-popup";
 
 const tableData = [
     {
@@ -42,16 +44,25 @@ const tableData = [
 const Files = () => {
 
     const tableRef = useRef<HTMLTableElement>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (tableRef.current) {
             new DataTable(tableRef.current, {
                 searchable: true,
                 sortable: true,
-                perPage: 1,
+                perPage: 10,
             });
         }
     }, []);
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
 
     return (
         <div className="flex flex-col min-h-screen bg-transparent ">
@@ -69,7 +80,7 @@ const Files = () => {
             <div className="flex-grow flex items-start justify-center mt-2">
                 <table ref={tableRef} className=" table-fixed w-full border-1">
                     <thead>
-                        <tr className="bg-gray-600 text-white borter-b">
+                        <tr className="bg-gray-600  text-white borter-b">
                             <th className="px-4 py-2 text-left">#</th>
                             <th className="px-4 py-2 text-left">File Name</th>
                             <th className="px-4 py-2 text-left">Size</th>
@@ -90,6 +101,20 @@ const Files = () => {
                     </tbody>
                 </table>
             </div>
+
+            <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+                + Upload File
+            </button>
+
+            { isModalOpen && (
+                <CreateFilePopup 
+                    isOpen={isModalOpen} 
+                    handleOpenModal={handleOpenModal}
+                    handleCloseModal={handleCloseModal} />
+            )}
         </div>
     );
 };
